@@ -8,7 +8,9 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\ContactForm;
+use app\models\Trip;
+use app\models\Schedule;
+use yii\db\Query;
 
 class SiteController extends Controller
 {
@@ -134,14 +136,13 @@ class SiteController extends Controller
      */
     public function actionHandleTrips()
     {
-        //$this->findModel($id)->delete();
-/*        
+        
         $trips = Trip::model()->find()->where(['status_id' => 0])->all();
         foreach ($trips as $trip) {
             /* @var $object SomeClass */
-/*            echo $object->some_property . PHP_EOL;
+            echo $object->some_property . PHP_EOL;
         }
-*/
+
         $query=new Query();
         $query->andWhere(['=','status_id',0]);
         $condition=$query->where;
@@ -149,7 +150,8 @@ class SiteController extends Controller
             ['status_id'=> 1], //attributes for update
             $condition);
 
-        return $this->redirect(['index']);
+            
+        return $this->render('index');
     }    
 
 }

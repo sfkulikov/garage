@@ -128,31 +128,17 @@ class Trip extends \yii\db\ActiveRecord
         return $car_->model.' ('.$car_->car_number.')';
     }
 
-    public function Cancel()
-    {
-        $trip = Trip::findOne($this->id);
-        $trip->status_id = 2;
-        $trip->save();    
-        return $trip;
-        //Trip::findOne($this->id);
-        //setTripStatus(2);
-    }
-
     protected function setTripStatus($status_id)
     {
-        $trip = Trip::findOne($this->id);
-        $trip->status_id = $status_id;
-        $trip->save();
-
-        /*
-        $transaction=$trip_->dbConnection->beginTransaction();
+        $db = Yii::$app->db;
+        $transaction = $db->beginTransaction();
         try
         {
             // поиск и сохранение — шаги, между которыми могут быть выполнены другие запросы,
             // поэтому мы используем транзакцию, чтобы удостовериться в целостности данных
-            $trip_ = Trip::findOne($this->id);
-            $trip_->status_id = status_id;
-            if($trip_->save())
+            $trip = Trip::findOne($this->id);
+            $trip->status_id = $status_id;
+            if($trip->save())
                 $transaction->commit();
             else
                 $transaction->rollback();
@@ -162,8 +148,18 @@ class Trip extends \yii\db\ActiveRecord
             $transaction->rollback();
             throw $e;
         }
-            */
+        return $trip;
+    }
 
+    public function Cancel()
+    {
+        //$trip = Trip::findOne($this->id);
+        //$trip->status_id = 2;
+        //$trip->save();    
+        return $this->setTripStatus(2);
+
+        //Trip::findOne($this->id);
+        //setTripStatus(2);
     }
 
     public function handleTrips(){
