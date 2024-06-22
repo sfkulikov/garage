@@ -128,30 +128,6 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
-    /**
-     * Find all active Trips, end them, create new trips on schedule.
-     * 
-     * @return Trip the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionHandleTrips()
-    {
-        
-        $trips = Trip::model()->find()->where(['status_id' => 0])->all();
-        foreach ($trips as $trip) {
-            /* @var $object SomeClass */
-            echo $object->some_property . PHP_EOL;
-        }
 
-        $query=new Query();
-        $query->andWhere(['=','status_id',0]);
-        $condition=$query->where;
-        Trip::updateAll(
-            ['status_id'=> 1], //attributes for update
-            $condition);
-
-            
-        return $this->render('index');
-    }    
 
 }

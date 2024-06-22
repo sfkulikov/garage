@@ -134,8 +134,6 @@ class Trip extends \yii\db\ActiveRecord
         $transaction = $db->beginTransaction();
         try
         {
-            // поиск и сохранение — шаги, между которыми могут быть выполнены другие запросы,
-            // поэтому мы используем транзакцию, чтобы удостовериться в целостности данных
             $trip = Trip::findOne($this->id);
             $trip->status_id = $status_id;
             if($trip->save())
@@ -151,23 +149,48 @@ class Trip extends \yii\db\ActiveRecord
         return $trip;
     }
 
+    // Отменить рейс
     public function Cancel()
     {
-        //$trip = Trip::findOne($this->id);
-        //$trip->status_id = 2;
-        //$trip->save();    
         return $this->setTripStatus(2);
-
-        //Trip::findOne($this->id);
-        //setTripStatus(2);
     }
 
-    public function handleTrips(){
-        // 1. выбрать все активные рейсы
-        // 2. завершить их
-        // 3. создать новые по табличке Расписания
-
+    // Завершить рейс
+    public function Finish()
+    {
+        return $this->setTripStatus(1);
     }
 
+    public function HandleTrips()
+    {
+        $trips = $this->findAll(['status_id' => 0]);
+        //var_dump($trips);
 
+        foreach ($trips as $trip) {
+            $trip->Finish();
+        }
+
+        $schedules = Schedule::findALL([]);
+        foreach ($schedules as $schedule) {
+            $new_trip = new Trip();
+            //$new_trip -> 
+
+            //$this->findModel($trip->id)->Finish();
+        }
+
+
+/*
+        $query=new Query();
+        $query->andWhere(['=','status_id',0]);
+        $condition=$query->where;
+        Trip::updateAll(
+            ['status_id'=> 1], //attributes for update
+            $condition);
+
+       return $this->render('index', [
+            'model' => $model,
+        ]); 
+*/
+
+    }
 }

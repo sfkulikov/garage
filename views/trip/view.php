@@ -24,6 +24,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a('Finish', ['finish', 'id' => $model->id], [
+            'class' => 'btn btn-danger',
+            'data' => [
+                'method' => 'post',
+            ],
+        ]) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [

@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\models\Trip;
 use app\models\TripSearch;
+use app\models\Schedule;
+use app\models\ScheduleSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -26,7 +28,6 @@ class TripController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
-                        'cancelTrip' => ['POST'],
                     ],
                 ],
             ]
@@ -157,4 +158,30 @@ class TripController extends Controller
         return $this->redirect(['index']);
     }
 
+    /**
+     * Ends an existing active Trip model.
+     * If ends is successful, the browser will be redirected to the 'index' page.
+     * @param int $id ID
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
+     */    
+    public function actionFinish($id)
+    {
+        $this->findModel($id)->Finish();
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Find all active Trips, end them, create new trips on schedule.
+     * 
+     * @return Trip the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionHandleTrips()
+    {
+        $model = new Trip();
+        $model -> HandleTrips();
+        return $this->redirect(['index']);
+    }    
 }

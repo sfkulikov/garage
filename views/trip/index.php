@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Создать рейс', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Обработать', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Обработать расписание', ['handle-trips'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
