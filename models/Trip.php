@@ -5,6 +5,8 @@ namespace app\models;
 use Yii;
 use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use yii\db\Expression;
+use app\models\Schedule;
+use app\models\ScheduleSearch;
 
 /**
  * This is the model class for table "trip".
@@ -27,6 +29,10 @@ use yii\db\Expression;
 class Trip extends \yii\db\ActiveRecord
 {
 
+    const STATUS_ACTIVE = 0;
+    const STATUS_FINISH = 1;
+    const STATUS_CANCEL = 2;
+    
     /**
      * {@inheritdoc}
      */
@@ -161,36 +167,26 @@ class Trip extends \yii\db\ActiveRecord
         return $this->setTripStatus(1);
     }
 
+    // Обработать расписание
     public function HandleTrips()
     {
-        $trips = $this->findAll(['status_id' => 0]);
-        //var_dump($trips);
+        Trip::updateAll(['status_id' => Trip::STATUS_FINISH], ['=', 'status_id', '0']);        
 
-        foreach ($trips as $trip) {
-            $trip->Finish();
-        }
-
-        $schedules = Schedule::findALL([]);
+        $schedules = Schedule::find()->where(['deleted' => null])->all();
+        //var_dump($schedules);die();
         foreach ($schedules as $schedule) {
-            $new_trip = new Trip();
-            //$new_trip -> 
-
-            //$this->findModel($trip->id)->Finish();
+            $newt = new Trip();
+            $newt->status_id = Trip::STATUS_ACTIVE;
+            $newt->start_date = date('Y-m-d').' '.$schedule->start_time;
+            $newt->end_date = date('Y-m-d').' '.$schedule->end_time;
+            $newt->driver_id = $schedule->driver_id;
+            $newt->car_id = $schedule->car_id;
+            $newt->address_from = $schedule->address_from;
+            $newt->address_to = $schedule->address_to;
+            $newt->driver_avard = $schedule->driver_avard;
+            $newt->isNewRecord = true;
+            $newt->insert();
         }
-
-
-/*
-        $query=new Query();
-        $query->andWhere(['=','status_id',0]);
-        $condition=$query->where;
-        Trip::updateAll(
-            ['status_id'=> 1], //attributes for update
-            $condition);
-
-       return $this->render('index', [
-            'model' => $model,
-        ]); 
-*/
 
     }
 }

@@ -4,12 +4,11 @@ namespace app\controllers;
 
 use app\models\Trip;
 use app\models\TripSearch;
-use app\models\Schedule;
-use app\models\ScheduleSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
+use yii\data\Pagination;
 
 /**
  * TripController implements the CRUD actions for Trip model.

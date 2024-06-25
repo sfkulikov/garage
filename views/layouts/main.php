@@ -42,7 +42,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             ['label' => 'Главная', 'url' => ['/site/index']],
             ['label' => 'Атомашины', 'url' => ['/car']],
             ['label' => 'Водители', 'url' => ['/driver']],
-            ['label' => 'Маршруты', 'url' => ['/schedule']],
+            ['label' => 'Расписание', 'url' => ['/schedule']],
             ['label' => 'Рейсы', 'url' => ['/trip']],
 
             Yii::$app->user->isGuest
