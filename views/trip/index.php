@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'driver_id',
                 'value' => function ($data) {
-                    return $data->getDriverText();
+                    return $data->getDriverFIO();
                 },                
             ],
             [

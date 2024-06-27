@@ -25,13 +25,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'driver_id') ?>
 
-    <?php // echo $form->field($model, 'car_id') ?>
+    <?php echo $form->field($model, 'car_id') ?>
 
-    <?php // echo $form->field($model, 'address_from') ?>
+    <?php echo $form->field($model, 'address_from') ?>
 
-    <?php // echo $form->field($model, 'address_to') ?>
+    <?php echo $form->field($model, 'address_to') ?>
 
-    <?php // echo $form->field($model, 'driver_avard') ?>
+    <?php echo $form->field($model, 'driver_avard') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

@@ -3,7 +3,7 @@
 namespace app\models;
 
 use Yii;
-use yii2tech\ar\softdelete\SoftDeleteBehavior;
+use yii\db\Query;
 use yii\db\Expression;
 use app\models\Schedule;
 use app\models\ScheduleSearch;
@@ -20,7 +20,7 @@ use app\models\ScheduleSearch;
  * @property string $address_from
  * @property string $address_to
  * @property float $driver_avard
- * @property string $deleted
+ * @property string $driver_fio
  *
  * @property Car $car
  * @property Driver $driver
@@ -49,7 +49,7 @@ class Trip extends \yii\db\ActiveRecord
         return [
             [['status_id', 'driver_id', 'car_id', 'address_from', 'address_to'], 'required'],
             [['status_id', 'driver_id', 'car_id'], 'integer'],
-            [['start_date', 'end_date', 'deleted'], 'safe'],
+            [['start_date', 'end_date'], 'safe'],
             [['driver_avard'], 'number'],
             [['address_from', 'address_to'], 'string', 'max' => 255],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => TripStatus::class, 'targetAttribute' => ['status_id' => 'id']],
@@ -73,9 +73,11 @@ class Trip extends \yii\db\ActiveRecord
             'address_from' => 'Address From',
             'address_to' => 'Address To',
             'driver_avard' => 'Driver Avard',
+            'driver_fio' => 'ФИО',
         ];
     }
 
+    /*
     public function behaviors()
     {
         return [
@@ -87,6 +89,7 @@ class Trip extends \yii\db\ActiveRecord
             ],
         ];
     }     
+    */
 
     /**
      * Gets query for [[Car]].
@@ -123,7 +126,7 @@ class Trip extends \yii\db\ActiveRecord
         return TripStatus::findOne($this->status_id)->status_name;
     }
 
-    public function getDriverText()
+    public function getDriverFIO()
     {
         return Driver::findOne($this->driver_id)->fio;
     }
@@ -189,4 +192,52 @@ class Trip extends \yii\db\ActiveRecord
         }
 
     }
+
+    // Получить отчёт
+    public function GetReport($date1, $date2)
+    {
+        $data = Trip::find()
+        ->select(['fio', 'cnt_trip' => new Expression('COUNT(*)'), 'sum(trip.driver_avard) AS sum_award'])
+        ->join('INNER JOIN', 'driver', 'driver.id = trip.driver_id')
+        ->where(['between', 'start_date',  $date1, $date2])
+        ->andwhere(['status_id' => Trip::STATUS_FINISH])
+        ->groupBy(['driver_id'])
+        ->asArray()
+        ->all();
+        //->createCommand()
+            ;
+        // работает    
+            
+        /*        
+        select @i:=@i+1 num, a.* 
+        from
+        (
+        SELECT `fio`, COUNT(*) AS `cnt_trip`, sum(trip.driver_avard) AS `sum_award` 
+        FROM `trip` 
+        INNER JOIN `driver` ON driver.id = trip.driver_id 
+        WHERE (`start_date` BETWEEN '2024-06-10' AND '2024-06-24') AND (`status_id`=1) 
+        GROUP BY `driver_id`
+        ) a
+        , (SELECT @i:=0) X;
+        */
+
+        $result = "Отчёт о выполненных рейсах с ". $date1 ." по ". $date2 . "\r\n";
+        $result .= "№п/п;фио водителя; кол-во поездок;сумарный заработок\r\n";
+        //echo "<br />";
+        $npp = 1;
+        foreach ($data as $value) {
+            $result .= $npp .
+                    ';' . $value['fio'] .
+                    ';' . $value['cnt_trip'] .
+                    ';' . $value['sum_award'] .
+                    "\r\n";
+            $npp += 1;
+            //var_dump($value);
+            //echo "<br />";
+        }
+
+        return $result;
+    }
+
+
 }

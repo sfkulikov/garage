@@ -182,5 +182,15 @@ class TripController extends Controller
         $model = new Trip();
         $model -> HandleTrips();
         return $this->redirect(['index']);
-    }    
+    }   
+    
+    public function actionGetReport($date1, $date2) {
+        $model = new Trip();
+        $data = $model->GetReport($date1, $date2);
+
+        header('Content-type: text/csv');
+        header('Content-Disposition: attachment; filename="trip_report_' . date('Ymd') . '_' . date('His') . '.csv"');
+        echo iconv('utf-8', 'windows-1251', $data); 
+        
+    }
 }

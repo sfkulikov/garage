@@ -18,7 +18,7 @@ class TripSearch extends Trip
     {
         return [
             [['id', 'status_id', 'driver_id', 'car_id'], 'integer'],
-            [['start_date', 'end_date', 'address_from', 'address_to', 'deleted'], 'safe'],
+            [['start_date', 'end_date', 'address_from', 'address_to'], 'safe'],
             [['driver_avard'], 'number'],
         ];
     }
@@ -42,7 +42,8 @@ class TripSearch extends Trip
     public function search($params)
     {
         $query = Trip::find()
-            ->where(['deleted' => null]) ;
+        ->where([]) ;
+        //->where(['deleted' => null]) ;
 
         // add conditions that should always apply here
 
