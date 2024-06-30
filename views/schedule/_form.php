@@ -16,7 +16,7 @@ use kartik\datecontrol\DateControl;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'car_id')->dropdownList(
-        Car::find()->select(['model',
+        Car::find()->select(['CONCAT(model, " (", car_number, ")")',
         'id'])->indexBy('id')->column(),
         ['prompt'=>'Выберите автомобиль']
     ) ?>

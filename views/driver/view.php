@@ -31,6 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'fio',
             'license_issue_date:date',
+            'stag',
         ],
     ]) ?>
 

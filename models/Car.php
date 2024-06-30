@@ -52,9 +52,9 @@ class Car extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'model' => 'Model',
-            'car_number' => 'Car Number',
-            'car_type_id' => 'Car Type ID',
+            'model' => 'Модель',
+            'car_number' => 'Номер',
+            'car_type_id' => 'Тип автомобиля',
             'deleted' => 'Время удаления',
         ];
     }

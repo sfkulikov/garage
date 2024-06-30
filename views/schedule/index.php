@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'driver_id',
                 'value' => function ($data) {
-                    return $data->getDriverText(); // $data['name'] for array data, e.g. using SqlDataProvider.
+                    return $data->getDriverFIO(); // $data['name'] for array data, e.g. using SqlDataProvider.
                 },
             ],
             //'car_id',

@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\TripStatus;
+use app\models\Driver;
+use app\models\Car;
 
 /** @var yii\web\View $this */
 /** @var app\models\Trip $model */
@@ -17,9 +19,17 @@ use app\models\TripStatus;
 
     <?= $form->field($model, 'end_date')->textInput() ?>
 
-    <?= $form->field($model, 'driver_id')->textInput() ?>
+    <?= $form->field($model, 'driver_id')->dropdownList(
+        Driver::find()->select(['fio',
+        'id'])->indexBy('id')->column(),
+        ['prompt'=>'Выберите водителя']
+    ) ?>
 
-    <?= $form->field($model, 'car_id')->textInput() ?>
+    <?= $form->field($model, 'car_id')->dropdownList(
+        Car::find()->select(["CONCAT(model, ' (', car_number,')')",
+        'id'])->indexBy('id')->column(),
+        ['prompt'=>'Выберите автомобиль']
+    ) ?>
 
     <?= $form->field($model, 'address_from')->textInput(['maxlength' => true]) ?>
 

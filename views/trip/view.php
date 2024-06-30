@@ -45,8 +45,18 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'start_date',
             'end_date',
-            'driver_id',
-            'car_id',
+            [
+                'attribute' => 'driver_id',
+                'value' => function ($data) {
+                    return $data->getDriverFIO();
+                },                
+            ],            
+            [
+                'attribute' => 'car_id',
+                'value' => function ($data) {
+                    return $data->getCarText();
+                },                
+            ],            
             'address_from',
             'address_to',
             'driver_avard',

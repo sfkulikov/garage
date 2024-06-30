@@ -13,12 +13,23 @@ use yii\db\Expression;
  * @property string $fio
  * @property string $license_issue_date
  * @property string $deleted
+ * @property int $stag
+ * 
  *
  * @property Schedule[] $schedules
  * @property Trip[] $trips
  */
 class Driver extends \yii\db\ActiveRecord
 {
+ 
+    //Стаж в годах
+    public function getStag()
+    {
+        $stag = date('Y') - date('Y',strtotime($this->license_issue_date)) - 
+                (date('m') * 32 + date('d') < date('m',strtotime($this->license_issue_date)) * 32 + date('d',strtotime($this->license_issue_date)) ? 1 : 0);
+        return $stag > 0 ? $stag : 0;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -50,6 +61,7 @@ class Driver extends \yii\db\ActiveRecord
             'fio' => 'ФИО',
             'license_issue_date' => 'Дата выдачи ВУ',
             'deleted' => 'Время удаления',
+            'stag' => 'Стаж/лет'
         ];
     }
 

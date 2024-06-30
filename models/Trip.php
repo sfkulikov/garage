@@ -65,14 +65,14 @@ class Trip extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'status_id' => 'Status ID',
-            'start_date' => 'Start Date',
-            'end_date' => 'End Date',
-            'driver_id' => 'Driver ID',
-            'car_id' => 'Car ID',
-            'address_from' => 'Address From',
-            'address_to' => 'Address To',
-            'driver_avard' => 'Driver Avard',
+            'status_id' => 'Статус рейса',
+            'start_date' => 'Дата/время начала',
+            'end_date' => 'Дата/время окончания',
+            'driver_id' => 'Водитель',
+            'car_id' => 'Автомобиль',
+            'address_from' => 'Откуда',
+            'address_to' => 'Куда',
+            'driver_avard' => 'Стоимость',
             'driver_fio' => 'ФИО',
         ];
     }

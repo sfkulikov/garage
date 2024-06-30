@@ -18,6 +18,7 @@ use yii\db\Expression;
  * @property string $address_to
  * @property float $driver_avard
  * @property string $deleted
+ * @property string $driver_fio
  *
  * @property Car $car
  * @property Driver $driver
@@ -55,13 +56,13 @@ class Schedule extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'driver_id' => 'Driver ID',
-            'car_id' => 'Car ID',
-            'start_time' => 'Start Time',
-            'end_time' => 'End Time',
-            'address_from' => 'Address From',
-            'address_to' => 'Address To',
-            'driver_avard' => 'Driver Avard',
+            'driver_id' => 'Водитель',
+            'car_id' => 'Автомобиль',
+            'start_time' => 'Время начала',
+            'end_time' => 'Время окончания',
+            'address_from' => 'Откуда',
+            'address_to' => 'Куда',
+            'driver_avard' => 'Стоимость',
             'deleted' => 'Время удаления',
         ];
     }
@@ -105,9 +106,35 @@ class Schedule extends \yii\db\ActiveRecord
         return $car_->model.' ('.$car_->car_number.')';
     }
     
-    public function getDriverText()
+    public function getDriverFIO()
     {
         return Driver::findOne($this->driver_id)->fio;
     }
  
+    public function beforeSave($insert)
+    {
+        if(!parent::beforeSave($insert))
+        {
+            return false;
+        }
+        
+        $car_ = Car::findOne($this->car_id); 
+        $driver_ = Driver::findOne($this->driver_id); 
+
+        if ($car_->car_type_id == 1){
+            if ($driver_ -> stag >= 2)
+                return true;
+            else
+                return false;
+        }
+        else {
+            if ($car_->car_type_id == 2){
+                if ($driver_ -> stag >= 5)
+                    return true;
+                else
+                    return false;
+            }
+        }
+        return true;
+    }    
 }

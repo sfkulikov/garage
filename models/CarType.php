@@ -42,7 +42,7 @@ class CarType extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'type_name' => 'Type Name',
+            'type_name' => 'Тип автомобиля',
         ];
     }
 
